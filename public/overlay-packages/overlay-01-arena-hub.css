@@ -1,0 +1,57 @@
+/* ═══════════════════════════════════════════════════════════════
+   OVERLAY 01 — ARENA HUB  ·  COMPLETED / LOCKED
+   ─────────────────────────────────────────────────────────────
+   First finished broadcast scorebug package.
+   Do not change these tokens when building Overlay 02+.
+   Future packages live as overlay-packages/overlay-02-*.css
+   ═══════════════════════════════════════════════════════════════ */
+
+:root,
+.broadcast-canvas,
+.broadcast-canvas[data-theme="arena"],
+.broadcast-canvas[data-overlay-package="01"] {
+  /* Locked dual palette */
+  --o01-navy: #4964A1;
+  --o01-navy-deep: #002153;
+  --o01-orange: #FFA503;
+  --o01-cyan: #00d4ff;
+  --o01-panel-top: #d8d8d8;
+  --o01-panel-bot: #ffffff;
+  --o01-ink: #0a0a0a;
+  --o01-ink-soft: #222222;
+  --o01-muted: #444444;
+
+  /* Wire into hub / broadcast tokens */
+  --hub-navy: var(--o01-navy);
+  --hub-navy-deep: var(--o01-navy-deep);
+  --hub-orange: var(--o01-orange);
+  --hub-cyan: var(--o01-cyan);
+  --hub-panel-top: var(--o01-panel-top);
+  --hub-panel-bot: var(--o01-panel-bot);
+
+  --dual-a: var(--o01-navy);
+  --dual-b: var(--o01-orange);
+  --dual-glow: var(--o01-cyan);
+
+  --arena-navy: var(--o01-navy);
+  --arena-navy-deep: var(--o01-navy-deep);
+  --arena-orange: var(--o01-orange);
+  --arena-cyan: var(--o01-cyan);
+  --arena-panel-top: var(--o01-panel-top);
+  --arena-panel-bot: var(--o01-panel-bot);
+
+  --broadcast-accent: var(--o01-orange);
+  --broadcast-panel: var(--o01-navy-deep);
+  --broadcast-danger: #dc2626;
+  --gfx-accent: var(--o01-orange);
+
+  /* Package meta (readable in DevTools) */
+  --overlay-package-id: "01";
+  --overlay-package-name: "Arena Hub";
+  --overlay-package-status: "completed-locked";
+}
+
+/* Mark canvas when Arena Hub is active */
+.broadcast-canvas[data-theme="arena"] {
+  --overlay-package-id: "01";
+}

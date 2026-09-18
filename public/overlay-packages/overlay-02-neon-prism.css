@@ -1,0 +1,61 @@
+/* ═══════════════════════════════════════════════════════════════
+   OVERLAY 02 — NEON PRISM  ·  COMPLETED / LOCKED
+   Cyber broadcast palette — void black / magenta / electric cyan
+   ═══════════════════════════════════════════════════════════════ */
+
+:root,
+.broadcast-canvas,
+.broadcast-canvas[data-theme="prism"],
+.broadcast-canvas[data-overlay-package="02"] {
+  --o02-void: #050510;
+  --o02-violet: #1a0a2e;
+  --o02-panel: #12081f;
+  --o02-magenta: #ff2d95;
+  --o02-cyan: #00f5ff;
+  --o02-lime: #c6ff00;
+  --o02-silver: #c8d0e0;
+  --o02-ink: #f4f6ff;
+  --o02-muted: #8b93b8;
+
+  --hub-navy: var(--o02-violet);
+  --hub-navy-deep: var(--o02-void);
+  --hub-orange: var(--o02-magenta);
+  --hub-cyan: var(--o02-cyan);
+  --hub-panel-top: #1e1230;
+  --hub-panel-bot: #0c0614;
+
+  --dual-a: var(--o02-magenta);
+  --dual-b: var(--o02-cyan);
+  --dual-glow: var(--o02-lime);
+
+  --arena-navy: var(--o02-violet);
+  --arena-navy-deep: var(--o02-void);
+  --arena-orange: var(--o02-magenta);
+  --arena-cyan: var(--o02-cyan);
+
+  --broadcast-accent: var(--o02-magenta);
+  --broadcast-panel: var(--o02-void);
+  --broadcast-danger: #ff3355;
+  --gfx-accent: var(--o02-cyan);
+
+  --overlay-package-id: "02";
+  --overlay-package-name: "Neon Prism";
+  --overlay-package-status: "completed-locked";
+}
+
+.broadcast-canvas[data-overlay-package="02"] .scoreboard-mount {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: auto;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  padding: 0 28px 22px;
+  pointer-events: none;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .graphics-root.gfx-focus-mode .scoreboard-mount {
+  opacity: 0;
+  transform: translateY(24px);
+}

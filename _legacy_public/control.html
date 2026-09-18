@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cricket Overlay — Control Panel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="control-body">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>🏏 Cricket Live</h1>
+        <span>Overlay Control</span>
+      </div>
+      <ul class="sidebar-nav">
+        <li class="active">Live Scoring</li>
+        <li>Overlay Preview</li>
+        <li>Animations</li>
+        <li>Settings</li>
+      </ul>
+      <div class="sidebar-footer">Local MVP · No auth</div>
+    </aside>
+
+    <div class="main-wrap">
+      <header class="top-bar">
+        <div class="top-bar-title">Tournament Control · <span class="room-badge-inline" id="current-room">—</span></div>
+        <div class="top-bar-meta">
+          <span id="connection-status" class="status-pill status-disconnected">Disconnected</span>
+          <div class="room-connect">
+            <input type="text" id="room-input" placeholder="match1" />
+            <button type="button" class="btn btn-sm btn-secondary" id="btn-connect">Connect</button>
+          </div>
+          <div class="overlay-link-box">
+            <span>OBS 1920×1080</span>
+            <input type="text" id="overlay-url" readonly />
+            <button type="button" class="btn btn-sm btn-success" id="btn-copy-url">Copy</button>
+          </div>
+        </div>
+      </header>
+
+      <section class="match-hero">
+        <div class="match-hero-inner" id="hero-scores">
+          <div class="team-score-card" id="hero-team-a">
+            <div class="team-label" id="hero-a-name">Team A</div>
+            <div class="team-big-score" id="hero-a-score">0/0</div>
+            <div class="team-overs" id="hero-a-overs">(0.0 ov)</div>
+          </div>
+          <span class="vs-badge">VS</span>
+          <div class="team-score-card team-b-card" id="hero-team-b">
+            <div class="team-label" id="hero-b-name">Team B</div>
+            <div class="team-big-score" id="hero-b-score">0/0</div>
+            <div class="team-overs" id="hero-b-overs">(0.0 ov)</div>
+          </div>
+        </div>
+        <div class="result-bar" id="hero-result">RESULT: Match in progress</div>
+      </section>
+
+      <main class="content-area">
+        <div class="content-tabs">
+          <div class="content-tab active">Live Scoring</div>
+          <div class="content-tab">Overlay State</div>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <section class="card">
+              <h2>Match Info</h2>
+              <div class="field-row">
+                <label for="match-title">Title</label>
+                <input type="text" id="match-title" class="wide" />
+              </div>
+              <div class="field-row">
+                <label for="match-no">Match No.</label>
+                <input type="text" id="match-no" class="narrow" />
+              </div>
+            </section>
+
+            <section class="card card-team-a">
+              <h2>Team A</h2>
+              <div class="field-row">
+                <label for="team-a-name">Name</label>
+                <input type="text" id="team-a-name" class="wide" />
+              </div>
+              <div class="field-row">
+                <label>Score</label>
+                <input type="number" id="team-a-score" class="narrow" min="0" />
+                <label>Wkts</label>
+                <input type="number" id="team-a-wickets" class="narrow" min="0" max="10" />
+                <label>Overs</label>
+                <input type="text" id="team-a-overs" class="narrow" placeholder="12.3" />
+              </div>
+              <div class="quick-buttons" data-team="A">
+                <button type="button" class="btn btn-quick run" data-action="+1">+1</button>
+                <button type="button" class="btn btn-quick run" data-action="+4">+4</button>
+                <button type="button" class="btn btn-quick run" data-action="+6">+6</button>
+                <button type="button" class="btn btn-quick wicket" data-action="+wicket">+Wkt</button>
+                <button type="button" class="btn btn-quick" data-action="-1">-1</button>
+                <button type="button" class="btn btn-quick" data-action="+ball">+Ball</button>
+              </div>
+              <p class="field-hint">Overlay player lines (e.g. ANKUSH 5* 2)</p>
+              <div class="field-row">
+                <label>Batsman 1</label>
+                <input type="text" id="team-a-batsman1" class="wide" placeholder="ANKUSH 5* 2" />
+              </div>
+              <div class="field-row">
+                <label>Batsman 2</label>
+                <input type="text" id="team-a-batsman2" class="wide" placeholder="OM S 0 3" />
+              </div>
+              <div class="field-row">
+                <label>Bowler</label>
+                <input type="text" id="team-a-bowler" class="wide" placeholder="RAKESH 6-1 1.0" />
+              </div>
+            </section>
+
+            <section class="card card-team-b">
+              <h2>Team B</h2>
+              <div class="field-row">
+                <label for="team-b-name">Name</label>
+                <input type="text" id="team-b-name" class="wide" />
+              </div>
+              <div class="field-row">
+                <label>Score</label>
+                <input type="number" id="team-b-score" class="narrow" min="0" />
+                <label>Wkts</label>
+                <input type="number" id="team-b-wickets" class="narrow" min="0" max="10" />
+                <label>Overs</label>
+                <input type="text" id="team-b-overs" class="narrow" placeholder="12.3" />
+              </div>
+              <div class="quick-buttons" data-team="B">
+                <button type="button" class="btn btn-quick run" data-action="+1">+1</button>
+                <button type="button" class="btn btn-quick run" data-action="+4">+4</button>
+                <button type="button" class="btn btn-quick run" data-action="+6">+6</button>
+                <button type="button" class="btn btn-quick wicket" data-action="+wicket">+Wkt</button>
+                <button type="button" class="btn btn-quick" data-action="-1">-1</button>
+                <button type="button" class="btn btn-quick" data-action="+ball">+Ball</button>
+              </div>
+              <p class="field-hint">Overlay player lines</p>
+              <div class="field-row">
+                <label>Batsman 1</label>
+                <input type="text" id="team-b-batsman1" class="wide" />
+              </div>
+              <div class="field-row">
+                <label>Batsman 2</label>
+                <input type="text" id="team-b-batsman2" class="wide" />
+              </div>
+              <div class="field-row">
+                <label>Bowler</label>
+                <input type="text" id="team-b-bowler" class="wide" />
+              </div>
+            </section>
+
+            <section class="card">
+              <h2>Batting & Result</h2>
+              <div class="toggle-row">
+                <span>Batting:</span>
+                <label><input type="radio" name="batting" value="A" id="batting-a" /> Team A</label>
+                <label><input type="radio" name="batting" value="B" id="batting-b" /> Team B</label>
+              </div>
+              <div class="field-row">
+                <label for="result-text">Result</label>
+                <input type="text" id="result-text" class="wide" placeholder="KCC MHAPRAL won by 15 runs" />
+                <button type="button" class="btn btn-secondary" id="btn-set-result">Set result</button>
+              </div>
+              <div class="toggle-row">
+                <label class="toggle-switch">
+                  <input type="checkbox" id="visible-toggle" checked />
+                  Show overlay on stream
+                </label>
+              </div>
+            </section>
+          </div>
+
+          <div>
+            <section class="card">
+              <h2>Animations</h2>
+              <p class="field-hint" style="margin-top:0;">One-off overlay effects — not saved to state.</p>
+              <div class="anim-buttons">
+                <button type="button" class="btn anim-four" data-anim="four">FOUR</button>
+                <button type="button" class="btn anim-six" data-anim="six">SIX</button>
+                <button type="button" class="btn anim-wicket" data-anim="wicket">WICKET</button>
+                <button type="button" class="btn anim-out" data-anim="out">OUT</button>
+                <button type="button" class="btn anim-milestone" data-anim="milestone">MILESTONE</button>
+              </div>
+            </section>
+
+            <section class="card">
+              <h2>Overlay Preview</h2>
+              <div id="mini-preview" class="mini-overlay-preview">
+                <div class="mini-title">MATCH SUMMARY</div>
+                <div class="mini-team-bar a" id="mini-a">Team A · 0-0</div>
+                <div class="mini-team-bar b" id="mini-b">Team B · 0-0</div>
+              </div>
+              <pre id="preview-json" class="preview-json"></pre>
+            </section>
+
+            <section class="card">
+              <h2>Danger Zone</h2>
+              <button type="button" class="btn btn-danger" id="btn-reset">Reset match</button>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="control.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+/* Teams library page */
+
+.teams-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 24px 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  padding: 12px 24px 32px;
+}
+
+.team-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.team-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.team-card-head h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #0f172a;
+}
+
+.team-card-head p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.team-card-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.team-card-actions .btn-link {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: #334155;
+}
+
+.team-card-actions .btn-link.danger {
+  color: #b91c1c;
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.team-player-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 260px;
+  overflow: auto;
+}
+
+.team-player-list li {
+  background: #f1f5f9;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #1e293b;
+}
+
+.team-player-list li.empty {
+  background: #e2e8f0;
+  color: #64748b;
+  font-weight: 600;
+  text-align: center;
+}
+
+#team-form textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 110px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+#team-form .field-hint {
+  margin: -4px 0 8px;
+  color: #64748b;
+  font-size: 0.82rem;
+}
+
+#team-form .field-hint em {
+  font-style: normal;
+  color: #0f172a;
+  font-weight: 700;
+}

@@ -1,0 +1,409 @@
+/* ═══════════════════════════════════════════════════════════════
+   NEON PRISM — fullscreen event graphics (SIX / FOUR / OUT / Summary)
+   Scoped to package 02 only — does not affect Arena Hub
+   ═══════════════════════════════════════════════════════════════ */
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-ss-boom,
+.broadcast-canvas[data-overlay-package="02"] .gfx-out-sting {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  background: transparent !important;
+}
+
+/* Hide Arena Hub ribbon stage visuals — repurpose structure */
+.broadcast-canvas[data-overlay-package="02"] .ss-bg,
+.broadcast-canvas[data-overlay-package="02"] .out-bg {
+  background: transparent !important;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .ss-ribbons,
+.broadcast-canvas[data-overlay-package="02"] .out-ribbons {
+  opacity: 0;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .ss-stage,
+.broadcast-canvas[data-overlay-package="02"] .out-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Scanline overlay */
+.broadcast-canvas[data-overlay-package="02"] .ss-stage::after,
+.broadcast-canvas[data-overlay-package="02"] .out-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 245, 255, 0.04) 2px,
+    rgba(0, 245, 255, 0.04) 3px
+  );
+  pointer-events: none;
+  z-index: 20;
+  animation: prismScan 6s linear infinite;
+}
+
+@keyframes prismScan {
+  from { transform: translateY(0); }
+  to { transform: translateY(12px); }
+}
+
+/* Radial burst behind word */
+.broadcast-canvas[data-overlay-package="02"] .ss-stage::before,
+.broadcast-canvas[data-overlay-package="02"] .out-stage::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 120vmax;
+  height: 120vmax;
+  transform: translate(-50%, -50%) scale(0.2);
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--o02-magenta) 45%, transparent) 0%, transparent 55%);
+  animation: prismBurst 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  pointer-events: none;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-out-sting .out-stage::before {
+  background: radial-gradient(circle, color-mix(in srgb, #ff3355 55%, transparent) 0%, transparent 55%);
+}
+
+@keyframes prismBurst {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.1); }
+  35% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Ghost outlines — neon glitch trail */
+.broadcast-canvas[data-overlay-package="02"] .ss-ghost,
+.broadcast-canvas[data-overlay-package="02"] .out-ghost {
+  position: absolute;
+  font-size: clamp(4rem, 14vw, 11rem);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  -webkit-text-stroke: 2px var(--o02-cyan);
+  color: transparent;
+  opacity: 0;
+  filter: drop-shadow(0 0 12px var(--o02-magenta));
+  animation: prismGhostLife 2.4s ease forwards;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-six .ss-ghost { animation-duration: 2.6s; }
+.broadcast-canvas[data-overlay-package="02"] .gfx-four .ss-ghost { animation-duration: 2.2s; }
+
+.broadcast-canvas[data-overlay-package="02"] .ss-g1 { left: 8%; top: 18%; animation-delay: 0.05s; }
+.broadcast-canvas[data-overlay-package="02"] .ss-g2 { right: 10%; top: 22%; animation-delay: 0.12s; }
+.broadcast-canvas[data-overlay-package="02"] .ss-g3 { left: 14%; bottom: 24%; animation-delay: 0.18s; }
+.broadcast-canvas[data-overlay-package="02"] .ss-g4 { right: 16%; bottom: 20%; animation-delay: 0.24s; }
+.broadcast-canvas[data-overlay-package="02"] .ss-g5 { left: 42%; top: 12%; animation-delay: 0.3s; }
+.broadcast-canvas[data-overlay-package="02"] .ss-g6 { right: 38%; bottom: 14%; animation-delay: 0.36s; }
+
+@keyframes prismGhostLife {
+  0% { opacity: 0; transform: scale(1.4) rotate(-6deg); }
+  18% { opacity: 0.55; transform: scale(1) rotate(0deg); }
+  55% { opacity: 0.25; }
+  100% { opacity: 0; transform: scale(0.85) translateY(-30px); }
+}
+
+/* Main word — glitch slam */
+.broadcast-canvas[data-overlay-package="02"] .ss-word-wrap,
+.broadcast-canvas[data-overlay-package="02"] .out-word-wrap {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 10;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .ss-word,
+.broadcast-canvas[data-overlay-package="02"] .out-word {
+  position: relative;
+  font-size: clamp(6rem, 22vw, 16rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  animation: prismWordSlam 2.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .ss-word-rim,
+.broadcast-canvas[data-overlay-package="02"] .out-word-rim {
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  -webkit-text-stroke: 4px var(--o02-magenta);
+  transform: translate(4px, -3px);
+  opacity: 0.7;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .ss-word-stroke,
+.broadcast-canvas[data-overlay-package="02"] .out-word-stroke {
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  -webkit-text-stroke: 3px var(--o02-cyan);
+  transform: translate(-3px, 2px);
+  opacity: 0.85;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .ss-word-face,
+.broadcast-canvas[data-overlay-package="02"] .out-word-face {
+  position: relative;
+  background: linear-gradient(180deg, #fff 0%, var(--o02-cyan) 45%, var(--o02-magenta) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 0 30px color-mix(in srgb, var(--o02-magenta) 80%, transparent));
+}
+
+@keyframes prismWordSlam {
+  0% { opacity: 0; transform: scale(2.2) skewX(-8deg); filter: blur(12px); }
+  12% { opacity: 1; transform: scale(0.92) skewX(2deg); filter: blur(0); }
+  16% { transform: scale(1.04) skewX(-1deg); }
+  22% { transform: scale(1) skewX(0); }
+  72% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.08); filter: blur(6px); }
+}
+
+/* OUT extras */
+.broadcast-canvas[data-overlay-package="02"] .out-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 51, 85, 0.55), transparent 60%);
+  opacity: 0;
+  animation: prismOutFlash 0.7s ease forwards;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .out-flash-b {
+  animation-delay: 0.08s;
+  background: radial-gradient(circle at center, rgba(255, 45, 149, 0.35), transparent 65%);
+}
+
+@keyframes prismOutFlash {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.broadcast-canvas[data-overlay-package="02"] .out-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 2px solid color-mix(in srgb, #ff3355 70%, transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.2);
+  opacity: 0;
+  animation: prismOutRing 1.2s ease forwards;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .out-ring-a { width: 200px; height: 200px; }
+.broadcast-canvas[data-overlay-package="02"] .out-ring-b { width: 400px; height: 400px; animation-delay: 0.1s; }
+.broadcast-canvas[data-overlay-package="02"] .out-ring-c { width: 700px; height: 700px; animation-delay: 0.2s; border-color: color-mix(in srgb, var(--o02-cyan) 50%, transparent); }
+
+@keyframes prismOutRing {
+  0% { opacity: 0.8; transform: translate(-50%, -50%) scale(0.15); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
+}
+
+.broadcast-canvas[data-overlay-package="02"] .out-cracks .out-crack {
+  stroke: #ff3355;
+  stroke-width: 3;
+  fill: none;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: prismCrackDraw 0.6s ease forwards;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .out-cracks .out-crack:nth-child(2) { animation-delay: 0.05s; stroke: var(--o02-magenta); }
+.broadcast-canvas[data-overlay-package="02"] .out-cracks .out-crack:nth-child(3) { animation-delay: 0.1s; }
+.broadcast-canvas[data-overlay-package="02"] .out-cracks .out-crack:nth-child(4) { animation-delay: 0.15s; stroke: var(--o02-cyan); }
+
+@keyframes prismCrackDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+.broadcast-canvas[data-overlay-package="02"] .out-stage {
+  animation: prismOutShake 0.45s ease 0.05s;
+}
+
+@keyframes prismOutShake {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-8px, 4px); }
+  40% { transform: translate(10px, -3px); }
+  60% { transform: translate(-6px, -5px); }
+  80% { transform: translate(5px, 2px); }
+}
+
+.broadcast-canvas[data-overlay-package="02"] .out-sub {
+  margin-top: 12px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  color: #ff3355;
+  text-align: center;
+  animation: prismMetaIn 0.5s ease 0.35s both;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .out-player {
+  margin-top: 8px;
+  text-align: center;
+  animation: prismMetaIn 0.5s ease 0.45s both;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .out-player strong {
+  display: block;
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  color: #fff;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .out-player em {
+  font-style: normal;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  color: var(--o02-cyan);
+}
+
+@keyframes prismMetaIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ── Match Summary — vertical glass cards ── */
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary {
+  width: 100%;
+  height: 100%;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-stack {
+  width: 92%;
+  max-width: 1700px;
+  height: 92%;
+  margin: 4% auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0;
+  background: transparent;
+  filter: none;
+  transform: none;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-brand {
+  position: static;
+  width: auto;
+  margin: 0 auto 4px;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .mu-logo-tile {
+  width: 72px;
+  height: 72px;
+  border: 2px solid var(--o02-cyan);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--o02-cyan) 50%, transparent);
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-pill-orange {
+  background: linear-gradient(90deg, var(--o02-magenta), var(--o02-cyan));
+  border: none;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%);
+  min-height: 52px;
+  padding: 10px 28px;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-pill-orange strong {
+  font-size: 1.5rem;
+  color: var(--o02-void);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-pill-orange em {
+  color: color-mix(in srgb, var(--o02-void) 75%, transparent);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-dual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  flex: 1;
+  min-height: 0;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-block {
+  background: color-mix(in srgb, var(--o02-violet) 85%, transparent);
+  border: 1px solid color-mix(in srgb, var(--o02-cyan) 35%, transparent);
+  border-radius: 0;
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+  padding: 14px 16px;
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 40px color-mix(in srgb, var(--o02-magenta) 12%, transparent);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-section-label {
+  background: linear-gradient(90deg, var(--o02-magenta), transparent);
+  color: #fff;
+  font-size: 0.78rem;
+  border: none;
+  margin: 10px 0 6px;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-cols {
+  color: var(--o02-cyan);
+  background: rgba(0, 0, 0, 0.35);
+  border-color: color-mix(in srgb, var(--o02-cyan) 25%, transparent);
+  font-size: 0.72rem;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-pill-team {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--o02-magenta) 30%, var(--o02-void)), var(--o02-void));
+  border: 1px solid color-mix(in srgb, var(--o02-magenta) 50%, transparent);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-team-score {
+  color: var(--o02-cyan);
+  font-size: 1.6rem;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-pill-silver {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-pill-name {
+  color: var(--o02-ink);
+  font-size: 0.88rem;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-pill-stat {
+  color: var(--o02-cyan);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .ms-pill-foot {
+  background: var(--o02-lime);
+  color: var(--o02-void);
+  font-size: 1rem;
+  clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary .gfx-piece {
+  animation: prismPieceIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--stagger, 0ms);
+}
+
+@keyframes prismPieceIn {
+  from { opacity: 0; transform: translateX(-20px); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+/* Neutralize Arena Hub gfx-enter on package 02 */
+.broadcast-canvas[data-overlay-package="02"] .gfx-six.tv-fx,
+.broadcast-canvas[data-overlay-package="02"] .gfx-four.tv-fx,
+.broadcast-canvas[data-overlay-package="02"] .gfx-out-sting.tv-fx,
+.broadcast-canvas[data-overlay-package="02"] .gfx-summary.tv-fx {
+  filter: none !important;
+  transform: none !important;
+}

@@ -1,0 +1,21 @@
+/* ═══════════════════════════════════════════════════════════════
+   Overlay theme flavours — DEPRECATED
+   
+   Only two completed packages remain:
+     01 · Arena Hub  (arena)
+     02 · Neon Prism (prism)
+   
+   Layout / glow tweaks for removed flavour IDs are gone.
+   Package-specific styling lives in overlay-packages/ and
+   overlay-scoreboard-prism.css / overlay-animations-prism.css
+   ═══════════════════════════════════════════════════════════════ */
+
+[data-theme="arena"],
+[data-overlay-package="01"] {
+  /* Arena Hub uses overlay-01-arena-hub.css tokens */
+}
+
+[data-theme="prism"],
+[data-overlay-package="02"] {
+  /* Neon Prism uses overlay-02-neon-prism.css tokens */
+}

@@ -1,0 +1,745 @@
+/* ═══════════════════════════════════════════════════════════════
+   Knockout Round — classic L→R canvas bracket
+   ═══════════════════════════════════════════════════════════════ */
+
+.gfx-knockout.tv-fx,
+.gfx-knockout.ipl-fx {
+  transform: scale(0.98);
+  filter: blur(4px);
+}
+.gfx-knockout.gfx-enter {
+  animation: gfxFadeScaleIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.gfx-knockout.gfx-exit {
+  animation: gfxFadeScaleOut 0.75s cubic-bezier(0.4, 0.05, 0.2, 1) forwards !important;
+}
+.gfx-knockout.gfx-enter .ko-head.gfx-piece { animation-name: gfxWipeDown; }
+.gfx-knockout.gfx-enter .ko-stage.gfx-piece { animation-name: gfxRiseSoft; }
+.gfx-knockout.gfx-enter .ko-fixture.gfx-piece { animation-name: gfxSlideFromLeft; }
+.gfx-knockout.gfx-exit .gfx-piece { animation-name: gfxFadeUpOut; }
+
+.ko-board {
+  width: min(1760px, 96vw);
+  background: #f3f5f8;
+  border: 2px solid #002153;
+  border-radius: 0;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  padding: 14px 18px 16px;
+  color: #0f172a;
+  font-family: "myFont", "Rajdhani", sans-serif;
+}
+
+.ko-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.ko-brands {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.ko-brands .tv-badge,
+.ko-brands .tv-badge-sm {
+  width: 64px !important;
+  height: 56px !important;
+  border-width: 2px !important;
+  border-radius: 0 !important;
+  border-color: #002153 !important;
+}
+.ko-brands .tv-badge img,
+.ko-brands .tv-badge-sm img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 0 !important;
+}
+.ko-titles { text-align: center; }
+.ko-titles strong {
+  display: block;
+  font-size: clamp(22px, 2.4vw, 36px);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: #002153;
+}
+.ko-titles em {
+  display: block;
+  margin-top: 4px;
+  font-style: normal;
+  font-size: clamp(12px, 1vw, 15px);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #E49402;
+}
+.ko-format-tag {
+  background: #002153;
+  color: #fff;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  padding: 10px 12px;
+  border-radius: 0;
+}
+
+.ko-canvas-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+}
+.ko-canvas-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ko-add-stage {
+  border: 1px solid #002153;
+  background: #fff;
+  color: #002153;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  padding: 6px 10px;
+  border-radius: 0;
+  cursor: pointer;
+}
+.ko-add-stage:hover { background: #E49402; }
+
+/* Classic left → right stages */
+.ko-bracket {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 40px;
+  min-height: 480px;
+  width: 100%;
+}
+.ko-format-16 .ko-bracket { min-height: 640px; }
+.ko-format-4 .ko-bracket { min-height: 300px; }
+
+.ko-svg-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+}
+
+.ko-stage {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+  z-index: 2;
+}
+.ko-stage-h {
+  position: relative;
+  background: #002153;
+  color: #fff;
+  text-align: center;
+  font-size: clamp(13px, 1.1vw, 16px);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 36px 10px 10px;
+  margin: 0 0 12px;
+  border-radius: 0;
+  line-height: 1.2;
+}
+.ko-stage-title { display: block; }
+.ko-stage-h em {
+  display: block;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  opacity: 0.8;
+  margin-top: 2px;
+  text-transform: none;
+}
+.ko-stage-actions {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 4px;
+}
+.ko-plus,
+.ko-minus {
+  width: 26px;
+  height: 26px;
+  border: 0;
+  background: #E49402;
+  color: #002153;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.ko-minus { background: #fff; color: #002153; }
+.ko-plus:hover,
+.ko-minus:hover { filter: brightness(1.08); }
+
+.ko-stage-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 16px;
+  position: relative;
+  min-height: 200px;
+}
+
+.ko-empty-stage {
+  padding: 20px;
+  text-align: center;
+  color: #94a3b8;
+  font-weight: 700;
+  border: 1px dashed #94a3b8;
+}
+
+/* Match block */
+.ko-fixture {
+  position: relative;
+  background: #fff;
+  border: 1.5px solid #002153;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+  z-index: 2;
+}
+.ko-fixture-final {
+  background: #E49402;
+  border-color: #002153;
+  border-width: 2px;
+}
+.ko-fixture-final .ko-row {
+  border-color: rgba(0, 33, 83, 0.35);
+}
+.ko-fixture-final .ko-team,
+.ko-fixture-final .ko-team input,
+.ko-fixture-final .ko-timebar,
+.ko-fixture-final .ko-timebar input,
+.ko-fixture-final .ko-timebar label,
+.ko-fixture-final .ko-timebar span {
+  color: #002153 !important;
+  font-weight: 900;
+}
+
+.ko-fx-remove {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 22px;
+  height: 22px;
+  border: 1px solid #002153;
+  background: #fff;
+  color: #b91c1c;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 5;
+  border-radius: 0;
+  padding: 0;
+}
+
+.ko-row {
+  display: flex;
+  align-items: stretch;
+  min-height: 38px;
+  border-bottom: 1px solid #cbd5e1;
+  background: transparent;
+}
+.ko-row:last-child { border-bottom: 0; }
+.ko-fixture .ko-row:last-of-type { border-bottom: 0; }
+
+.ko-ini {
+  flex: 0 0 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #002153;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  border-right: 1px solid rgba(0, 33, 83, 0.25);
+}
+
+.ko-team {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: clamp(14px, 1.2vw, 18px);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1 1 auto;
+  line-height: 1.15;
+}
+
+.ko-row.is-pending .ko-team {
+  color: #94a3b8;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.ko-row.is-pending .ko-ini {
+  background: #64748b;
+}
+
+/* Full-width time bar under teams */
+.ko-timebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 6px 10px;
+  background: #e8eef5;
+  border-top: 1px solid #002153;
+}
+.ko-fixture-final .ko-timebar {
+  background: rgba(0, 33, 83, 0.12);
+}
+.ko-fixture-final .ko-ini {
+  background: #002153;
+  color: #fff;
+  border-right-color: rgba(0, 33, 83, 0.2);
+}
+.ko-timebar label,
+.ko-timebar em {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 900;
+  font-style: normal;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #475569;
+}
+.ko-timebar input,
+.ko-timebar span {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: #fff;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 6px 8px;
+  outline: none;
+  border-radius: 0;
+  border: 1px solid #94a3b8;
+}
+.ko-timebar span {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: block;
+}
+.ko-fixture-final .ko-timebar input {
+  border-color: rgba(0, 33, 83, 0.35);
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.ko-foot {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.24em;
+  color: #64748b;
+}
+
+.ko-format-16 .ko-row { min-height: 30px; }
+.ko-format-16 .ko-team {
+  font-size: clamp(12px, 1vw, 15px);
+  padding: 5px 8px;
+}
+.ko-format-16 .ko-timebar { min-height: 28px; padding: 4px 8px; }
+.ko-format-16 .ko-timebar input,
+.ko-format-16 .ko-timebar span { font-size: 12px; padding: 4px 6px; }
+.ko-format-16 .ko-stage-body { gap: 10px; }
+.ko-format-16 .ko-bracket { gap: 36px; }
+
+/* Kill legacy fancy pieces */
+.ko-logo,
+.ko-brace,
+.ko-grp-tag,
+.ko-match-meta,
+.ko-vs-orb,
+.ko-final-card,
+.ko-sf-label,
+.ko-feed,
+.ko-cell {
+  display: none !important;
+}
+
+/* ── Control editor mirror ── */
+.ko-editor-board {
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  padding: 12px;
+  border-radius: 0;
+  transform: none;
+  filter: none;
+  background: #f3f5f8;
+}
+.ko-editor-board .ko-bracket { min-height: 460px; }
+.ko-editor-board.ko-format-16 .ko-bracket { min-height: 600px; }
+
+.ko-dates {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+@media (min-width: 1100px) {
+  .ko-dates { grid-template-columns: repeat(6, 1fr); }
+}
+.ko-dates label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #334155;
+  text-transform: uppercase;
+}
+.ko-dates input {
+  border-radius: 0;
+  border: 1px solid #94a3b8;
+  background: #fff;
+  color: #0f172a;
+  padding: 6px 8px;
+  font: inherit;
+  font-weight: 700;
+}
+.ko-dates input:disabled {
+  opacity: 0.45;
+  background: #e2e8f0;
+}
+
+.ko-editor-board .ko-team input {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-weight: 800;
+  width: 100%;
+  min-width: 0;
+  outline: none;
+  color: inherit;
+  padding: 0;
+}
+
+.ko-show-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 12px;
+}
+.ko-show-bar .btn-ko-primary {
+  background: #E49402;
+  color: #002153;
+  border: 0;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  padding: 12px 18px;
+  border-radius: 0;
+  cursor: pointer;
+  font: inherit;
+  box-shadow: 0 3px 0 #002153;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.ko-show-bar .btn-ko-primary:hover { filter: brightness(1.05); }
+
+.ko-tree,
+.ko-side,
+.ko-center,
+.ko-round,
+.ko-pair,
+.ko-final-wrap,
+.ko-sf-row { display: none !important; }
+.ko-editor-board .ko-bracket,
+.gfx-knockout .ko-bracket { display: flex !important; }
+
+/* ═══════════════════════════════════════════════════════════════
+   Broadcast overlay look (stream) — dark Arena Hub panel
+   ═══════════════════════════════════════════════════════════════ */
+.gfx-knockout .ko-board {
+  background:
+    linear-gradient(180deg, rgba(0, 33, 83, 0.35) 0%, transparent 42%),
+    linear-gradient(180deg, #001433 0%, #002153 48%, #001029 100%);
+  border: 3px solid #E49402;
+  color: #fff;
+  box-shadow:
+    0 0 0 1px rgba(0, 212, 255, 0.25),
+    0 22px 50px rgba(0, 0, 0, 0.55);
+  padding: 18px 22px 16px;
+}
+.gfx-knockout .ko-titles strong {
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+}
+.gfx-knockout .ko-titles em {
+  color: #E49402;
+}
+.gfx-knockout .ko-format-tag {
+  background: #E49402;
+  color: #002153;
+  border: 0;
+}
+.gfx-knockout .ko-brands .tv-badge,
+.gfx-knockout .ko-brands .tv-badge-sm {
+  border-color: #E49402 !important;
+  background: #fff !important;
+}
+.gfx-knockout .ko-bracket {
+  gap: 44px;
+  min-height: 520px;
+  padding: 4px 2px 8px;
+}
+.gfx-knockout.ko-format-16 .ko-bracket {
+  gap: 36px;
+  min-height: 600px;
+}
+.gfx-knockout .ko-stage-h {
+  background: linear-gradient(90deg, #001a44 0%, #003070 50%, #001a44 100%);
+  border-bottom: 3px solid #E49402;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+  padding: 11px 12px;
+}
+.gfx-knockout .ko-stage-body {
+  gap: 14px;
+}
+.gfx-knockout.ko-format-16 .ko-stage-body {
+  gap: 10px;
+}
+.gfx-knockout .ko-fixture {
+  background: linear-gradient(180deg, #ffffff 0%, #e8eef6 100%);
+  border: 2px solid #fff;
+  box-shadow:
+    0 0 0 2px #002153,
+    0 8px 16px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+.gfx-knockout .ko-fixture-final {
+  background: linear-gradient(180deg, #ffb52e 0%, #E49402 55%, #c67a00 100%);
+  border-color: #fff;
+  box-shadow:
+    0 0 0 2px #002153,
+    0 0 28px rgba(228, 148, 2, 0.45),
+    0 10px 20px rgba(0, 0, 0, 0.4);
+}
+.gfx-knockout .ko-row {
+  min-height: 42px;
+  border-bottom-color: rgba(0, 33, 83, 0.14);
+}
+.gfx-knockout.ko-format-16 .ko-row {
+  min-height: 34px;
+}
+.gfx-knockout .ko-ini {
+  flex-basis: 40px;
+  background: #002153;
+  color: #E49402;
+  font-size: 13px;
+}
+.gfx-knockout .ko-fixture-final .ko-ini {
+  background: #002153;
+  color: #E49402;
+}
+.gfx-knockout .ko-team {
+  color: #002153;
+  font-size: clamp(15px, 1.25vw, 20px);
+  font-weight: 900;
+}
+.gfx-knockout.ko-format-16 .ko-team {
+  font-size: clamp(13px, 1.05vw, 16px);
+}
+.gfx-knockout .ko-row.is-pending .ko-team {
+  color: #7c8aa0;
+  letter-spacing: 0.12em;
+}
+.gfx-knockout .ko-row.is-pending .ko-ini {
+  background: #3b4d66;
+  color: #c5d0de;
+}
+.gfx-knockout .ko-timebar {
+  background: #002153;
+  border-top: 0;
+  min-height: 30px;
+  padding: 5px 10px;
+}
+.gfx-knockout .ko-timebar em {
+  color: #E49402;
+}
+.gfx-knockout .ko-timebar span {
+  color: #fff;
+  font-size: 13px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+.gfx-knockout .ko-fixture-final .ko-timebar {
+  background: rgba(0, 33, 83, 0.88);
+}
+.gfx-knockout .ko-fixture-final .ko-team {
+  color: #002153;
+}
+.gfx-knockout .ko-svg-links {
+  display: none !important;
+}
+.gfx-knockout .ko-foot {
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.32em;
+  margin-top: 14px;
+}
+
+/* Final arena — trophy + bat/ball accents */
+.gfx-knockout .ko-stage-final {
+  flex: 1.15 1 0;
+}
+.gfx-knockout .ko-stage-final .ko-stage-body {
+  justify-content: center;
+  align-items: center;
+}
+.gfx-knockout .ko-final-arena {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0 4px;
+}
+.gfx-knockout .ko-final-burst {
+  position: absolute;
+  inset: 8% 12% 18%;
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    rgba(228, 148, 2, 0.35) 0%,
+    rgba(228, 148, 2, 0.08) 42%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+  animation: koFinalPulse 2.8s ease-in-out infinite;
+}
+.gfx-knockout .ko-final-trophy {
+  position: relative;
+  z-index: 2;
+  width: 72px;
+  height: 90px;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.45));
+  animation: koTrophyFloat 3.2s ease-in-out infinite;
+}
+.gfx-knockout .ko-final-trophy .ko-ico-trophy {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.gfx-knockout .ko-final-row {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: auto minmax(160px, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+}
+.gfx-knockout .ko-final-match {
+  min-width: 0;
+}
+.gfx-knockout .ko-final-deco {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.gfx-knockout .ko-final-deco-l .ko-ico-bat {
+  transform: rotate(-28deg);
+}
+.gfx-knockout .ko-final-deco-r .ko-ico-bat {
+  transform: rotate(28deg) scaleX(-1);
+}
+.gfx-knockout .ko-ico-bat {
+  width: 26px;
+  height: 84px;
+  display: block;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
+}
+.gfx-knockout .ko-ico-ball {
+  width: 36px;
+  height: 36px;
+  display: block;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+  animation: koBallSpin 8s linear infinite;
+}
+.gfx-knockout .ko-final-deco-r .ko-ico-ball {
+  animation-direction: reverse;
+}
+.gfx-knockout .ko-final-caption {
+  position: relative;
+  z-index: 2;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  color: #E49402;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+}
+.gfx-knockout.ko-format-16 .ko-final-trophy {
+  width: 56px;
+  height: 70px;
+}
+.gfx-knockout.ko-format-16 .ko-ico-bat {
+  width: 20px;
+  height: 64px;
+}
+.gfx-knockout.ko-format-16 .ko-ico-ball {
+  width: 28px;
+  height: 28px;
+}
+.gfx-knockout.ko-format-16 .ko-final-row {
+  gap: 6px;
+}
+
+@keyframes koTrophyFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes koBallSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes koFinalPulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}

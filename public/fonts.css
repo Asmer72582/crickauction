@@ -1,0 +1,35 @@
+/**
+ * Global project font — Rajdhani Bold
+ * Served from /fonts/Rajdhani/Rajdhani-Bold.ttf
+ */
+
+@font-face {
+  font-family: "myFont";
+  src: url("/fonts/Rajdhani/Rajdhani-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rajdhani";
+  src: url("/fonts/Rajdhani/Rajdhani-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-display: "myFont", "Rajdhani", sans-serif;
+  --font-body: "myFont", "Rajdhani", sans-serif;
+  --bo-font: "myFont", "Rajdhani", sans-serif;
+}
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: "myFont", "Rajdhani", sans-serif;
+}

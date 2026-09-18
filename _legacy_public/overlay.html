@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cricket Overlay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="overlay.css">
+</head>
+<body>
+  <div class="broadcast-viewport" id="broadcast-viewport">
+    <div class="broadcast-canvas" id="broadcast-canvas">
+      <div class="graphics-root" id="graphics-root">
+        <div class="scoreboard-mount" id="scoreboard-mount"></div>
+        <div class="event-layer" id="event-layer"></div>
+        <div class="fullscreen-layer" id="fullscreen-layer"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="graphics-engine.js"></script>
+  <script src="overlay.js"></script>
+</body>
+</html>

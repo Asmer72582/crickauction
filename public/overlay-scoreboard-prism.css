@@ -1,0 +1,401 @@
+/* ═══════════════════════════════════════════════════════════════
+   NEON PRISM — scoreboard (lower-third cyber strip)
+   ═══════════════════════════════════════════════════════════════ */
+
+.broadcast-canvas[data-overlay-package="02"] .sb-prism {
+  width: 100%;
+  max-width: 1840px;
+  filter: drop-shadow(0 0 28px color-mix(in srgb, var(--o02-magenta) 35%, transparent));
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-frame {
+  position: relative;
+  background: linear-gradient(180deg, rgba(8, 4, 16, 0.92) 0%, rgba(5, 5, 16, 0.98) 100%);
+  border: 1px solid color-mix(in srgb, var(--o02-cyan) 45%, transparent);
+  clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 28px 100%, 0 calc(100% - 28px));
+  overflow: hidden;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--o02-magenta) 18%, transparent), transparent 35%, transparent 65%, color-mix(in srgb, var(--o02-cyan) 18%, transparent)),
+    repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 245, 255, 0.03) 3px, rgba(0, 245, 255, 0.03) 4px);
+  pointer-events: none;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-glow {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: -40px;
+  height: 80px;
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--o02-magenta) 55%, transparent), transparent 70%);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ── Top bar ── */
+.broadcast-canvas[data-overlay-package="02"] .prism-top {
+  display: grid;
+  grid-template-columns: 72px 1fr auto auto 72px;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 18px 8px;
+  border-bottom: 1px solid color-mix(in srgb, var(--o02-cyan) 25%, transparent);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-logo-l,
+.broadcast-canvas[data-overlay-package="02"] .prism-logo-r {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .sb-prism .sb-logo {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px var(--o02-cyan));
+}
+
+.broadcast-canvas[data-overlay-package="02"] .sb-prism .sb-logo-fallback {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--o02-cyan);
+  border: 2px solid var(--o02-magenta);
+  background: var(--o02-void);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-ticker {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-ticker em {
+  font-style: normal;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--o02-magenta);
+  flex-shrink: 0;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-ticker strong {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--o02-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-ticker.is-swap strong {
+  animation: prismTickerSwap 0.32s ease;
+}
+
+@keyframes prismTickerSwap {
+  0% { opacity: 0; transform: translateY(6px); filter: blur(4px); }
+  100% { opacity: 1; transform: none; filter: none; }
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--o02-muted);
+  line-height: 1.35;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-vs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--o02-silver);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-vs i {
+  font-style: normal;
+  color: var(--o02-magenta);
+  font-size: 0.7rem;
+}
+
+/* ── Main grid ── */
+.broadcast-canvas[data-overlay-package="02"] .prism-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr 300px;
+  gap: 0;
+  min-height: 118px;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-col {
+  padding: 12px 18px;
+  position: relative;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-col-score {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--o02-magenta) 22%, var(--o02-void)), var(--o02-void));
+  border-right: 1px solid color-mix(in srgb, var(--o02-magenta) 30%, transparent);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-col-bat {
+  border-right: 1px solid color-mix(in srgb, var(--o02-cyan) 20%, transparent);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-team-tag {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--o02-cyan);
+  margin-bottom: 4px;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-scoreline {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  line-height: 1;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-scoreline .sb-score {
+  font-size: 3.1rem;
+  font-weight: 900;
+  color: var(--o02-ink);
+  text-shadow: 0 0 24px color-mix(in srgb, var(--o02-magenta) 70%, transparent);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-scoreline .sb-wickets {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--o02-magenta);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-scoreline .sb-wickets.wicket-flash {
+  animation: prismWkFlash 0.4s ease;
+}
+
+@keyframes prismWkFlash {
+  0%, 100% { color: var(--o02-magenta); }
+  50% { color: #fff; text-shadow: 0 0 20px var(--o02-magenta); }
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-slash {
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--o02-muted);
+  margin: 0 2px;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-overs {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--o02-silver);
+  margin-top: 2px;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-chase-row {
+  margin-top: 8px;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--o02-muted);
+  display: flex;
+  gap: 8px;
+}
+
+/* ── Batters ── */
+.broadcast-canvas[data-overlay-package="02"] .prism-bat {
+  display: grid;
+  grid-template-columns: 18px 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid transparent;
+  font-size: 0.92rem;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-bat.on-strike {
+  border-left-color: var(--o02-lime);
+  background: color-mix(in srgb, var(--o02-lime) 8%, transparent);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-bat .sb-strike {
+  color: var(--o02-lime);
+  font-weight: 900;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-bat .sb-bat-name {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--o02-ink);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-bat .sb-bat-runs {
+  font-weight: 800;
+  color: var(--o02-cyan);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-bat .sb-bat-balls {
+  font-size: 0.82rem;
+  color: var(--o02-muted);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-this-over {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed color-mix(in srgb, var(--o02-cyan) 20%, transparent);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-this-over .sb-ball {
+  min-width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+  border: 1px solid color-mix(in srgb, var(--o02-cyan) 35%, transparent);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--o02-silver);
+  clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-this-over .sb-ball-four {
+  background: var(--o02-cyan);
+  color: var(--o02-void);
+  border-color: var(--o02-cyan);
+  box-shadow: 0 0 12px var(--o02-cyan);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-this-over .sb-ball-six {
+  background: var(--o02-magenta);
+  color: #fff;
+  border-color: var(--o02-magenta);
+  box-shadow: 0 0 12px var(--o02-magenta);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-this-over .sb-ball-wicket {
+  background: #ff3355;
+  color: #fff;
+  border-color: #ff3355;
+}
+
+/* ── Bowler column ── */
+.broadcast-canvas[data-overlay-package="02"] .prism-bowler {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-bowler .sb-bowl-name {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--o02-ink);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-bowler .sb-bowl-fig {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--o02-magenta);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-bowler .sb-bowl-overs {
+  font-size: 0.82rem;
+  color: var(--o02-muted);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-rates {
+  display: flex;
+  gap: 16px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--o02-silver);
+  margin-bottom: 8px;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-rates #sb-rrr.is-idle {
+  opacity: 0.45;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-last {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: color-mix(in srgb, var(--o02-violet) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--o02-magenta) 35%, transparent);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-last em {
+  font-style: normal;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--o02-muted);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-last strong {
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--o02-cyan);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .prism-last[data-kind="four"] strong { color: var(--o02-cyan); }
+.broadcast-canvas[data-overlay-package="02"] .prism-last[data-kind="six"] strong { color: var(--o02-magenta); }
+.broadcast-canvas[data-overlay-package="02"] .prism-last[data-kind="wicket"] strong { color: #ff3355; }
+
+/* ── Chase / result banners ── */
+.broadcast-canvas[data-overlay-package="02"] .sb-prism .sb-chase,
+.broadcast-canvas[data-overlay-package="02"] .sb-prism .sb-result {
+  padding: 8px 18px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: var(--o02-lime);
+  background: color-mix(in srgb, var(--o02-lime) 12%, var(--o02-void));
+  border-top: 1px solid color-mix(in srgb, var(--o02-lime) 40%, transparent);
+}
+
+.broadcast-canvas[data-overlay-package="02"] .sb-prism.sb-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.broadcast-canvas[data-overlay-package="02"] .sb-prism:not(.sb-hidden) {
+  animation: prismSbIn 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes prismSbIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: none; }
+}
